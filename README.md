@@ -1,3 +1,3 @@
 # todo_list
 
-## 리액트로 만들어보는 간
+## indexedDB를 사용해서 만들어보는 todolist

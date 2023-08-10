@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+
+
+// import React ,{useState} from 'react';
+import TodoList from "./pages/TodoList";
+import * as data from "./assets/data";
+
+
+
+
 
 function App() {
+
+data.dbSet();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>TodoList</h1>
+
+    <TodoList />
+    
     </div>
   );
 }
