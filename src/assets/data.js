@@ -14,7 +14,7 @@ if(!window.indexedDB){
   cusDB.onsuccess = e => {
       console.log("연결");
       db = e.target.result;
-      console.log(db)
+
   }
   // 에러
   cusDB.onerror = e =>{
@@ -70,24 +70,32 @@ export function dbAdd(title, time , content){
 export function dbGetAll(){
   let cusDB = indexedDB.open('cusDB',1);
   let db;
+  let ret = [];
+
   cusDB.onsuccess = (e)=>{
     db = e.target.result;
 
     const transaction = db.transaction('todoList','readonly');
     const objStore = transaction.objectStore('todoList');
     const dbCursor = objStore.openCursor();
-
+    
     dbCursor.onsuccess = (e)=>{
       let cursor = e.target.result;
+
+
       if(cursor){
-        console.log(cursor)
-        console.log(cursor.value);
+        // console.log(cursor)
+        
+        ret = [...ret, cursor.value]
+        
         cursor.continue();
       }else{
-        console.log('end')
+        console.log("end")
+        console.log(ret)
       }
-      
-    }
 
+    }
+    
+    console.log(ret)
   }
 }

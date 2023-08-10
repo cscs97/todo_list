@@ -5,6 +5,7 @@ function TodoList(){
 
 
 
+
 const createLi= (e) =>{
     e.preventDefault()
 
@@ -15,19 +16,20 @@ const createLi= (e) =>{
 
     data.dbAdd(title, time , content)
 
-
-
 }
 
-    let LiArr = (e)=>{
+    function LiArr (e){
+        e.preventDefault();
+
         console.log(data.dbGetAll())
+
     }
 
 return (
     <div className="todo_list">
+        <button onClick={LiArr}></button>
         <ul className="todo">
             <li>
-                <LiArr />
             </li>
         </ul>
         <form onSubmit={createLi}>
