@@ -67,11 +67,16 @@ export function dbAdd(title, time , content){
 }
 
 
+
+// 2023.08.10 에 커밋했던 처리시간때문에 못받아오던 리턴값을 promise를 사용해서 해결
+// 블로그에 업로드 해보기
+
 export function dbGetAll(){
   let cusDB = indexedDB.open('cusDB',1);
   let db;
   let ret = [];
 
+  return new Promise ((resolve) =>{
   cusDB.onsuccess = (e)=>{
     db = e.target.result;
 
@@ -81,21 +86,15 @@ export function dbGetAll(){
     
     dbCursor.onsuccess = (e)=>{
       let cursor = e.target.result;
-
-
       if(cursor){
         // console.log(cursor)
-        
         ret = [...ret, cursor.value]
-        
         cursor.continue();
       }else{
         console.log("end")
-        console.log(ret)
+        resolve(ret)
       }
-
     }
-    
-    console.log(ret)
   }
+  })
 }
