@@ -2,7 +2,8 @@
 
 // import React ,{useState} from 'react';
 import TodoList from "./pages/TodoList";
-import * as data from "./assets/data";
+import * as data from "./utils/data";
+
 
 
 

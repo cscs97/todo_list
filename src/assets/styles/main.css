@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+:root{
+    --basic-font: 'Binggrae';
+    font-size:10px;
+}
+
+*{
+    font-family:var(--basic-font)
+}

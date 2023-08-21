@@ -12,7 +12,6 @@ if(!window.indexedDB){
 } else {
   //성공
   cusDB.onsuccess = e => {
-      console.log("연결");
       db = e.target.result;
 
   }
@@ -35,48 +34,58 @@ if(!window.indexedDB){
 }
 
 // db 데이터 추가
-export function dbAdd(title, time , content){
+export function dbAdd(title, timeH,timeM , content){
 
-  let tit = title;
-  let tim = time
-  let con = content;
-  let cusDB = indexedDB.open('cusDB',1);
-  let db;
-  cusDB.onsuccess = e => {
-    
-      console.log(e)
-      db = e.target.result;
-      const transaction = db.transaction('todoList', 'readwrite');
-      const objStore = transaction.objectStore('todoList');
-      const addReq = objStore.add({
-          title : tit,
-          time: tim,
-          content : con,
-      });
-      addReq.onsuccess =function(e){
+  return new Promise((resolve, reject)=>{
+
+    let tit = title;
+    let timH = timeH
+    let timM = timeM
+    let con = content;
+    let cusDB = indexedDB.open('cusDB',1);
+    let db;
+    cusDB.onsuccess = e => {
+
+        db = e.target.result;
+        const transaction = db.transaction('todoList', 'readwrite');
+        const objStore = transaction.objectStore('todoList');
+        const addReq = objStore.add({
+            title : tit,
+            time: timH +":"+timM,
+            content : con,
+        });
+        addReq.onsuccess =function(e){
+            resolve(e)
+
+        }
+        addReq.onupgradeneeded =function(e){
           console.log(e);
+  
       }
-      addReq.onerror = e =>{
-          console.log('error', e.name)
-      }
+      addReq.onerror = function (e) {
+        reject(new Error('Error adding item to IndexedDB'));
+      };
+  
+    }
+    cusDB.onerror = (e) => {
+      reject(new Error('Error opening IndexedDB'));
+    };
 
-  }
-  cusDB.onerror = e =>{
-      console.log("error", e.target.error)
-  }
-}
+  })
+
+};
 
 
 
 // 2023.08.10 에 커밋했던 처리시간때문에 못받아오던 리턴값을 promise를 사용해서 해결
 // 블로그에 업로드 해보기
+// 해결완
 
 export function dbGetAll(){
-  let cusDB = indexedDB.open('cusDB',1);
+  return new Promise ((resolve) =>{
+    let cusDB = indexedDB.open('cusDB',1);
   let db;
   let ret = [];
-
-  return new Promise ((resolve) =>{
   cusDB.onsuccess = (e)=>{
     db = e.target.result;
 
@@ -91,7 +100,7 @@ export function dbGetAll(){
         ret = [...ret, cursor.value]
         cursor.continue();
       }else{
-        console.log("end")
+
         resolve(ret)
       }
     }
