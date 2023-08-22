@@ -1,6 +1,10 @@
 import AddTodo from "../component/AddTodo"
 import * as data from "../utils/data"
 import React, { useState, useEffect } from "react"
+import { colors, fontFamily, fontSizes } from "../assets/styles/styles"
+import styled from 'styled-components';
+
+
 
 function TodoList() {
 
@@ -14,13 +18,13 @@ function TodoList() {
     }, []);
 
 
-  const handleAddTodo = (newTodo) => {
-    data.dbAdd(newTodo.title, newTodo.timeH,newTodo.timeM, newTodo.content).then(() => {
-      data.dbGetAll().then((data) => {
-        setLiData(data);
-      });
-    });
-  };
+    const handleAddTodo = (newTodo) => {
+        data.dbAdd(newTodo.title, newTodo.timeH, newTodo.timeM, newTodo.content).then(() => {
+            data.dbGetAll().then((data) => {
+                setLiData(data);
+            });
+        });
+    };
 
     const submitData = (e) => {
         e.preventDefault()
@@ -36,15 +40,22 @@ function TodoList() {
         e.target.reset();
     }
 
+    function openList(e){
+        console.log(e.target.parentNode)
+    }
+
+
     return (
-        <div className="todo_list">
+        <TodoListBody className="todo_list">
 
             <ul className="todo">
                 {liData.map((item) => (
-                    <li key={item.id}>
-                        <div>{item.title}</div>
-                        <p>{item.time}</p>
-                        <p>{item.content}</p>
+                    <li key={item.id} onClick={openList}>
+                        <div className="title">{item.title} <span>{item.time}</span></div>
+                        <ul className="list">
+                            <li>{item.time}</li>
+                            <li>{item.content}</li>
+                        </ul>
                     </li>
                 ))}
             </ul>
@@ -52,10 +63,38 @@ function TodoList() {
                 <AddTodo />
             </form>
 
-        </div>
+        </TodoListBody>
     );
 
 }
 
+const TodoListBody = styled.div`
+    background-color:#eee;
+    padding:1rem;
+    .todo > li {
+        width:90%;
+        font-size:2rem;
+        background-color:${colors.back1};
+        margin:0.5rem auto;
+        border-radius: 1rem;
+        overflow:hidden;
+        color:${colors.mainFont}
+    }
+    .todo > li >.title{
+        height:4rem;
+        padding:1rem;
+        font-weight:700;
+    }
+    .todo > li >.title span{
+        font-size: 1rem;
+        opacity:0.8;
+    }
+    .todo > li .list{
+        background-color: ${colors.secondary};
+        overflow:hidden;
+        height:0rem;
+    }
+
+`
 
 export default TodoList;

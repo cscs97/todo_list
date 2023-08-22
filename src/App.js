@@ -15,7 +15,7 @@ data.dbSet();
 
   return (
     <div className="App">
-      <h1>TodoList</h1>
+      <h1>Diary</h1>
 
     <TodoList />
     
